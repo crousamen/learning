@@ -1,0 +1,27 @@
+### Exo portant sur le déclencheur automatique
+
+# name: "triggers - exercice 2"
+# on:
+#   push:
+#   branches: 
+#     - main
+#   pull_request:
+# jobs:
+#   stale:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - run: echo "je vérifie que le code compile bien"
+
+# ---
+
+# name: "triggers - exercice 3"
+# on:
+#   pull_request:
+#     paths:
+#       - '!test/**'
+#       - '**.yaml'
+# jobs:
+#   stale:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - run: echo "je vérifie les fichiers YAML"
