@@ -1,5 +1,13 @@
 name: Repository Events
-on: [push, pull_request, issues]
+#on: [push, pull_request, issues] ## there are many type of events. verify the official documentation to see which one is covenient for you
+
+# As you can notice, some events come with "Activity types". Below is how we configure it. Exple: Trigged the workflow the opened, assigned reopened a pill_request
+on: 
+  push:
+  pull_request:
+    types: [opened, assigned, reopened, synchronize]
+  issues:
+    types: [opened]
 
 jobs:
   check-out-test:
