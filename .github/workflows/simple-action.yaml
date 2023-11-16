@@ -1,0 +1,14 @@
+name: Simple Action
+on: [push]
+
+jobs:
+  simple-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simple JS Action
+        id: greet
+        uses: actions/hello-world-javascript-action@main # recommended to use commit ID than main for security purposes
+        with:
+          who-to-greet: chrys
+      - name: Log greeting time
+        run: echo "{{ steps.greet.outputs.time }}"
