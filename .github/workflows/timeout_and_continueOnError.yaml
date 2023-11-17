@@ -4,7 +4,7 @@ on: [push]
 jobs:
   job-1:
     runs-on: ubuntu-latest
-    timeout-minutes: 1 ## Mark the job as fail if it takes more than 1 minute to finish
+    timeout-minutes: 1 ## Mark the job as failed/canceled if it takes more than 1 minute to finish
     steps:
       - name: Step 1
         run: sleep 90
