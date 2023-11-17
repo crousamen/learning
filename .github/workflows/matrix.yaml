@@ -12,7 +12,7 @@ on: [push]
 
 jobs:
   node-matrix:
-    continue-on-error: true # prevent the entire workflow to fail if a job failed
+    continue-on-error: false # prevent the entire workflow to fail if a job failed
     strategy:
       matrix:
         node-version: [14, 15, 16]
@@ -31,11 +31,14 @@ jobs:
         exclude:
             - os: ubuntu-latest
               node-version: 14
-      fail-fast: false # This will allow the all pending job to continue processing if a job failed in our matrix
+      fail-fast: true # This will allow the all pending job to continue processing if a job failed in our matrix
       max-parallel: 3 # Maximum number of job running at the same time. 
     runs-on: ${{ matrix.os }}
     steps:
+      - if: matrix.experimental == true
+        run: exit 1
       - run: node -v
+      - run: echo '${{ toJson(matrix) }}'
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
