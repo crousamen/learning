@@ -1,0 +1,25 @@
+name: Expressions & Contexts
+on: [push, issues, pull_request, workflow_dispatch]
+
+jobs:
+  using-expressions-and-contexts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Expressions
+        id: expressions
+        run: |
+          echo ${{ 1 }}
+          echo ${{ 'This is a string' }}
+          echo ${{ null }}
+          echo ${{ true }}
+          echo ${{ 1 > 2 }}
+          echo ${{ 'string' == 'String' }}
+          echo ${{ true && false }}
+          echo ${{ true || (false && true) }}
+      - name: Dump Contexts
+        run: | 
+            echo '${{ toJson(github) }}' # toJson is a pre-built function in github-action, check this link to find more available functions (https://docs.github.com/en/actions/learn-github-actions/expressions#functions)
+            echo '${{ toJson(job) }}'
+            echo '${{ toJson(secrets) }}' #github,job,secrets,steps and runner are context to evaluate.
+            echo '${{ toJson(steps) }}' # check this link for more github actions context (https://docs.github.com/en/actions/learn-github-actions/contexts)
+            echo '${{ toJson(runner) }}'
