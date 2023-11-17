@@ -6,7 +6,7 @@ jobs:
   runs-on-issues-and-prs:
     runs-on: ubuntu-latest
     #if: github.event_name == 'pull_request' || github.event_name == 'issues' # solution 1 # essay way
-    if: contains(fromJson('["issue", "pull_request"]'), github.event_name)   # solution 2 # sophisticated way
+    if: contains(fromJson('["issues", "pull_request"]'), github.event_name)   # solution 2 # sophisticated way
     steps:
       - name: Run only if issue has abug
         if: contains(github.event.issue.labels.*.name, 'bug')
