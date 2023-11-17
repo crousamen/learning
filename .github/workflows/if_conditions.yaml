@@ -1,4 +1,4 @@
-name: Expressions & Contexts
+name: If conditions 
 on: [push, issues, pull_request, workflow_dispatch]
 run-name: "Expressions & Contexts by @${{ github.actor }}, event: ${{ github.event_name}}" # 'run-name' customize the name to display in the list of wokflow run
 
