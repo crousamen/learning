@@ -12,7 +12,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     # if $GITHUB_REF == 'refs/heads/main'  DON'T DO THIS
     steps:
-      - name: Multiline ENV Var
+      - name: Multiline ENV Var 1
         run: |
           #DELIMITER=1234 ## This value must unique in the workflow  this command $(dd if=/dev/urandom bs=15 count=1 status=none | base64) help us generate a unique value 
           DELIMITER=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
@@ -21,6 +21,14 @@ jobs:
           curl -s https://icanhazdadjoke.com/ >> "$GITHUB_ENV"
           echo "" >> "$GITHUB_ENV"
           echo "$DELIMITER" >> "$GITHUB_ENV"
+
+      - name: Multiline ENV Var 2
+        run: |
+            {
+              echo 'JSON_RESPONSE<<EOF'
+              curl -s https://icanhazdadjoke.com/ 
+              echo EOF
+            } >> "$GITHUB_ENV"
       - name: Set Env Var
         run: | 
           echo "NEW_ENV_VAR=$(date)" >> "$GITHUB_ENV" 
@@ -37,3 +45,4 @@ jobs:
           echo $JOB_LEVEL_ENV
           echo $NEW_ENV_VAR
           echo $RANDOM_JOKE
+          echo $JSON_RESPONSE
