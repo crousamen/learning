@@ -1,0 +1,30 @@
+name: Expressions & Contexts
+on: [push, issues, pull_request, workflow_dispatch]
+run-name: "Expressions & Contexts by @${{ github.actor }}, event: ${{ github.event_name}}" # 'run-name' customize the name to display in the list of wokflow run
+
+jobs:
+  runs-on-issues-and-prs:
+    runs-on: ubuntu-latest
+    #if: github.event_name == 'pull_request' || github.event_name == 'issues' # solution 1 # essay way
+    if: contains(fromJson('["issue", "pull_request"]'), github.event_name)   # solution 2 # sophisticated way
+    steps:
+      - name: Run only if issue has abug
+        if: contains(github.event.issue.labels.*.name, 'bug')
+        run: echo ${{ join(github.event.issue.labels.*.name, ', ') }}
+  using-expressions-and-contexts:
+    if: github.event_name == 'push' ## this job will run only if with have a push event
+    runs-on: ubuntu-latest
+    steps:
+      - name: Expressions
+        id: expressions
+        run: |
+          echo ${{ 'string' == 'String' }}
+          echo ${{ true && false }}
+          echo ${{ true || (false && true) }}
+      - name: Dump Contexts
+        run: | 
+            echo '${{ toJson(github) }}' # toJson is a pre-built function in github-action, check this link to find more available functions (https://docs.github.com/en/actions/learn-github-actions/expressions#functions)
+            echo '${{ toJson(job) }}'
+            echo '${{ toJson(secrets) }}' #github,job,secrets,steps and runner are context to evaluate.
+            echo '${{ toJson(steps) }}' # check this link for more github actions context (https://docs.github.com/en/actions/learn-github-actions/contexts)
+            echo '${{ toJson(runner) }}'
