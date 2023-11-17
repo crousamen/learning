@@ -3,11 +3,13 @@ on: [push]
 
 jobs:
   node-matrix:
-    
+    continue-on-error: true # prevent the entire workflow to fail if a job failed
     strategy:
       matrix:
         node-version: [14, 15, 16]
         os: [ubuntu-latest, windows-latest]
+      fail-fast: false # This will allow the all pending job to continue processing if a job failed in our matrix
+      max-parallel: 3 # Maximum number of job running at the same time. 
     runs-on: ${{ matrix.os }}
     steps:
       - run: node -v
