@@ -12,10 +12,15 @@ jobs:
     if: github.ref == 'refs/heads/main'
     # if $GITHUB_REF == 'refs/heads/main'  DON'T DO THIS
     steps:
-      - name: Log ENV VAR
-        run: echo $GITHUB_REF # this value is already present in our runner machine as an environment variables.
-      - name: Log Context
-        run: echo '${{ github.ref }}' # This value is evaluated by github before sending it to runner for processing
+      - name: Multiline ENV Var
+        run:
+          #DELIMITER=1234 ## This value must unique in the workflow  this command $(dd if=/dev/urandom bs=15 count=1 status=none | base64) help us generate a unique value 
+          DELIMITER=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "RAMDOM_JOKE <<$DELIMITER" >> "$GITHUB_ENV"
+          echo "Here is a joke: " >> "$GITHUB_ENV"
+          curl -s https://icanhazdadjoke.com >> "$GITHUB_ENV"
+          echo "" >> "$GITHUB_ENV"
+          echo "$DELIMITER" >> "$GITHUB_ENV"
       - name: Set Env Var
         run: | 
           echo "NEW_ENV_VAR=$(date)" >> "$GITHUB_ENV" 
@@ -31,3 +36,4 @@ jobs:
           echo $WF_LEVEL_ENV
           echo $JOB_LEVEL_ENV
           echo $NEW_ENV_VAR
+          echo $RANDOM_JOKE
