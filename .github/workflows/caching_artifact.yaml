@@ -6,17 +6,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Cache node modules
-        id: cache-dependencies
+        id: cache-dependencies       ### Caching actions
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: "npm-cache"
+        #  key: "npm-cache" # Having a static cache key is not good, because if the file(npm depedency file) that we are caching change, it will not be
+                           # taking into consideration, the best way is to have dynamic cache key which will change any time with add new depency.
+          key: npm-cache-${{ hashFiles('**/package-lock.json') }}# create a key base on the hash file of the package.lock.json
+          restore-keys: |   # If the key is not found, use the starting with "npm-cache-, os.npm-cache"
+            npm-cache- 
+            os-npm-cache
       - name: Display Cache Output
         run: echo '${{ toJSON(steps.cache-dependencies.outputs) }}'
       - name: Install dependencies
         run: npm install
       - name: Use Axios
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6       ### Action use to passe json script
         with:
           script: |
             const axios = require('axios');
