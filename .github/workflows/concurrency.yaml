@@ -1,0 +1,18 @@
+name: Concurrency 
+run-name: Concurrency  (${{ inputs.environment }})
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment"
+        type: environment
+        required: true
+
+concurrency: #Help manage how 2 workflows in the same group can run 
+  group: ${{ github.workflow }}-${{ github.event.inputs.environment }}
+  cancel-in-progress: true # With this parameter, only the last event will be processed. The olders process will be canceled
+jobs:
+  sleep:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep 30
