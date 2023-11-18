@@ -1,0 +1,24 @@
+name: Calling Reusable Workflows
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Input description"
+        type: string
+        default: "Chrys"
+        required: false
+jobs:
+  calling-a-reusable-wf:
+    uses: crousamen/reusable_workflow/.github/workflows/reusable.yaml@main ## Call workflow from another repository
+    with:
+      name: ${{ inputs.name }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}
+  calling-a-reusable-wf-in-the-same-repo:
+    uses: ./.github/workflows/reusable-workflow.yaml                        ## Calling a workflow in the same repository
+    secrets: inherit                                                        ## Herite du secret venant du workflow parent
+  using-reusable-wf-output:
+    runs-on: ubuntu-latest
+    needs: calling-a-reusable-wf-in-the-same-repo
+    steps:
+      - run: echo ${{ needs.calling-a-reusable-wf-in-the-same-repo.outputs.date }}
